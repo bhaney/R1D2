@@ -27,7 +27,9 @@ def extract_price(bsitem):
 
 
 def extract_table(response):
-    items = bs4.BeautifulSoup(response.text, 'lxml').find(
+    soup = bs4.BeautifulSoup(response.text, 'html.parser')
+    #print(soup.prettify())
+    items = soup.find(
         'table',
         class_='menuRestaurant').findAll('table',
                                          class_='HauteurMenu')

@@ -2,7 +2,6 @@ import r1
 from r1.helpers import first_day_of_this_week
 from r1.filter import (filter_menu, make_filter)
 
-from bot import RestaurantBot
 
 from flask import (
     Flask,
@@ -11,11 +10,10 @@ from flask import (
     request
 )
 from flask_cors import CORS, cross_origin
-from flask.ext import shelve
+import flask_shelve as shelve
 from functools import partial
 from os import getenv
 
-TELEGRAM_BOT_TOKEN = getenv('TELEGRAM_BOT_TOKEN')
 
 
 def load_menu():
@@ -36,27 +34,10 @@ def get_menu():
         g.day = d
     return g.menu
 
-
-bot = RestaurantBot(get_menu)
-bot.add_menu_action('r1', ['r1', 'today'])
-bot.add_menu_action('r2', ['r2', 'today'])
-bot.add_menu_action('r3', ['r3', 'today'])
-bot.add_menu_action('today', ['today'])
-bot.add_menu_action('tomorrow', ['tomorrow'])
-bot.add_menu_action('vegetarian', ['vegetarian', 'today'])
-
 app = Flask(__name__)
 app.debug = True
 app.config['SHELVE_FILENAME'] = 'shelve.db'
 shelve.init_app(app)
-
-
-@app.route('/telegram/{}/'.format(TELEGRAM_BOT_TOKEN), methods=['POST'])
-def handle_telegram():
-    resp = bot.respond(request.json)
-    if resp is None:
-        return 'OK'
-    return jsonify(resp)
 
 
 @app.route('/<path:path>')
@@ -71,6 +52,5 @@ def json_menu(path):
 def index():
     return json_menu('today')
 
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

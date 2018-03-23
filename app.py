@@ -31,7 +31,7 @@ def get_menu():
     fd = first_day_of_this_week()
     if d is None or d != fd:
         g.menu = load_menu()
-        g.day = d
+        g.day = fd
     return g.menu
 
 app = Flask(__name__)

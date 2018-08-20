@@ -17,7 +17,9 @@ restaurant_from_string = partial(enum_from_string, Restaurant)
 
 
 DishType = Enum('DishType', ['menu1', 'menu2', 'menu3', 'vegetarian',
-                             'speciality', 'grill', 'pasta', 'pizza'])
+                             'speciality', 'grill', 'pasta', 'pizza',
+                             'hamburger','marche','saison','grill2',
+                             'grill3','pizza2'])
 valid_string_for_dishtype = partial(valid_string_for_enum, DishType)
 dishtype_from_string = partial(enum_from_string, DishType)
 

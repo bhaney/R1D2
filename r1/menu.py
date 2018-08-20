@@ -5,13 +5,13 @@ import re
 import requests
 
 from .helpers import (first_day_of_this_week, grouper, today)
-from .settings import (PARAMS, URL1, URL2)
+from .settings import (PARAMS, URL1)
 from .types import (DishType, MenuItem, Restaurant)
 
 
 def get_urls(restaurant):
     params = PARAMS[restaurant]
-    return (URL1.format(**params), URL2.format(**params))
+    return URL1.format(**params)
 
 
 def extract_name(bsitem):
@@ -28,11 +28,10 @@ def extract_price(bsitem):
 
 def extract_table(response):
     soup = bs4.BeautifulSoup(response.text, 'html.parser')
-    #print(soup.prettify())
     items = soup.find(
-        'table',
-        class_='menuRestaurant').findAll('table',
+        'table',class_='menuRestaurant').findAll('table',
                                          class_='HauteurMenu')
+    #print([(extract_name(i), extract_price(i)) for i in items[1::2]])
     return [(extract_name(i), extract_price(i)) for i in items[1::2]]
 
 
@@ -46,13 +45,10 @@ def create_payload(page):
 
 
 def fetch_menu(restaurant):
-    url1, url2 = get_urls(restaurant)
+    url1 = get_urls(restaurant)
     params = PARAMS[restaurant]
     s = requests.Session()
-    return it.chain([extract_table(s.get(url1))] +
-                    [extract_table(s.post(url2,
-                                          data=create_payload(i)))
-                     for i in range(2, params.get('pages', 2) + 1)])
+    return extract_table(s.get(url1))
 
 
 def split_days(items, structure):
@@ -62,7 +58,10 @@ def split_days(items, structure):
 
 def get_menu(restaurant):
     params = PARAMS[restaurant]
-    items = split_days(fetch_menu(restaurant), params['page_structure'])
+    res_menu = fetch_menu(restaurant)
+    if params['pages'] == 1:
+        res_menu = [res_menu]
+    items = split_days(res_menu, params['page_structure'])
     day_structure = params['dishes']
     first_day = first_day_of_this_week()
     menu = []
@@ -76,5 +75,5 @@ def get_menu(restaurant):
 
 def get_full_menu():
     return (get_menu(Restaurant.r1) +
-            get_menu(Restaurant.r2) +
-            get_menu(Restaurant.r3))
+            get_menu(Restaurant.r2))
+            #get_menu(Restaurant.r3))

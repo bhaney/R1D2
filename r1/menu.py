@@ -48,7 +48,7 @@ def fetch_menu(restaurant):
     url1 = get_urls(restaurant)
     params = PARAMS[restaurant]
     s = requests.Session()
-    return extract_table(s.get(url1))
+    return [extract_table(s.get(url1))]
 
 
 def split_days(items, structure):
@@ -58,10 +58,7 @@ def split_days(items, structure):
 
 def get_menu(restaurant):
     params = PARAMS[restaurant]
-    res_menu = fetch_menu(restaurant)
-    if params['pages'] == 1:
-        res_menu = [res_menu]
-    items = split_days(res_menu, params['page_structure'])
+    items = split_days(fetch_menu(restaurant), params['page_structure'])
     day_structure = params['dishes']
     first_day = first_day_of_this_week()
     menu = []

@@ -2,13 +2,15 @@ from .types import (DishType, Restaurant)
 
 
 BASE = 'http://www.novae-restauration.ch/menus/'
-URL1 = BASE + '?x={x}&y={y}&z={z}'
+URL1 = BASE + 'menu-week/cern/{menu}'
+#URL1 = BASE + '?x={x}&y={y}&z={z}'
 #URL2 = BASE + '/novae/traiteur/restauration/{html}.html?frame=1'
 PARAMS = {
     Restaurant.r1: {
         'x': 'd894ddae3c17b40b4fe7e16519f950f0',
         'y': 'c7b3f79848b99a8e562a1df1d6285365',
         'z': '33',
+        'menu': '13',
         'html': 'restaurant-cern',
         'pages': 1,
         'page_structure': (8,),
@@ -34,11 +36,12 @@ PARAMS = {
         'x': 'fd7538322d53ecf7f708990e221d5f36',
         'y': 'fd7538322d53ecf7f708990e221d5f36',
         'z': '145',
+        'menu': '33',
         'html': 'restaurant-cern-1',
         'pages': 2,
-        'page_structure': (3, 3),
-        'dishes': (DishType.menu1, DishType.menu2, DishType.menu3,
-                   DishType.speciality, DishType.pizza, DishType.grill),
+        'page_structure': (7,),
+        'dishes': (DishType.vegetarian,DishType.saison, DishType.menu2, DishType.speciality,
+                   DishType.grill, DishType.pizza, DishType.pizza2),
         'currency': '€'
     }
 }

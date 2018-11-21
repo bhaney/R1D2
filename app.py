@@ -21,8 +21,8 @@ def load_menu():
     fd = first_day_of_this_week()
     day = db.get('day', None)
     if day is None or day != fd:
-        db['menu'] = r1.get_full_menu()
-        db['day'] = fd
+    	db['menu'] = r1.get_full_menu()
+    	db['day'] = fd
     return db['menu']
 
 
@@ -30,8 +30,8 @@ def get_menu():
     d = g.get('day', None)
     fd = first_day_of_this_week()
     if d is None or d != fd:
-        g.menu = load_menu()
-        g.day = fd
+    	g.menu = load_menu()
+    	g.day = fd
     return g.menu
 
 app = Flask(__name__)

@@ -19,7 +19,7 @@ def extract_name(bsitem):
 
 
 def extract_price(bsitem):
-    reg = re.compile(r'(\d+\.?\d*)')
+    reg = re.compile(r'(\d+\.\d*)')
     mat = reg.findall(bsitem.text)
     if len(mat) > 0:
         return float(mat[0])
@@ -32,6 +32,7 @@ def extract_table(response):
         'table',class_='menuRestaurant').findAll('table',
                                          class_='HauteurMenu')
     #print([(extract_name(i), extract_price(i)) for i in items[1::2]])
+    items = items[:-4]
     return [(extract_name(i), extract_price(i)) for i in items[1::2]]
 
 
@@ -71,6 +72,6 @@ def get_menu(restaurant):
 
 
 def get_full_menu():
-    return (get_menu(Restaurant.r1) +
-            get_menu(Restaurant.r3))
+    return (get_menu(Restaurant.r1))
+            #get_menu(Restaurant.r3))
             #get_menu(Restaurant.r3))

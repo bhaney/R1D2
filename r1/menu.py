@@ -32,7 +32,7 @@ def extract_table(response):
         'table',class_='menuRestaurant').findAll('table',
                                          class_='HauteurMenu')
     #print([(extract_name(i), extract_price(i)) for i in items[1::2]])
-    items = items[:-4]
+    #items = items[:-4]
     return [(extract_name(i), extract_price(i)) for i in items[1::2]]
 
 
